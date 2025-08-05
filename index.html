@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Welcome to JWT Token Authentication</h1>
+    <p>This is a simple implementation of JWT token authentication using Node.js, Express, and JSON Web Tokens.</p>
+
+    <h3>Fill the form</h3>
+
+    <form id="loginform">
+        username :<input type='text' id="username" /><br />
+        email :<input type='email' id="email" /><br />
+        password :<input type='password' id="password" /><br />
+
+        <button type="submit">Register </button><br />
+    </form>
+
+</body>
+<script>
+
+    document.getElementById('loginform').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        console.log('username:' + username + ' , email:' + email + ' , password :' + password);
+
+        const res = await fetch('/generatetoken', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password })
+        })
+        const data = await res.json();
+
+        localStorage.setItem('jwtToken', data.token);
+
+        alert('token generated :' + data.message);
+        console.log('registered successfully');
+
+        window.location.href = '/login.html';
+
+    });
+
+</script>
+
+</html>
