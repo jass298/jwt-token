@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+</head>
+
+<body>
+
+    <h1>Login</h1>
+
+    <form id="verification">
+        username :<input type='text' id="username" /><br />
+        password :<input type='password' id="password" /><br />
+        <button type="submit">Login</button><br />
+    </form>
+
+
+</body>
+
+<script>
+    document.getElementById('verification').addEventListener('submit', async function (e) {
+        e.preventDefault();
+     
+        const token = localStorage.getItem('jwtToken');
+
+        if (!token) {
+            alert('no found token');
+            return;
+        }
+   
+        try {
+            const res = await fetch('/verifytoken', {
+                method: 'GET',
+                headers: {
+                    'Authorization': token
+                }
+            });
+               const data = await res.text();
+               
+            if (res.ok) {
+                console.log("login successfully");
+                alert(data);
+            }
+            else {
+                console.error('Token verification failed');
+                alert(`Error: ${data}`);
+            }
+        } catch (err) {
+            console.error('Error during fetch:', err);
+            alert('Fetch error');
+        }
+    });
+
+</script>
+
+</html>
